@@ -1,4 +1,4 @@
-ref_des,delivery_method,stream
+refdes,method,stream
 RS03CCAL-MJ03F-05-BOTPTA301,streamed,botpt_heat_sample
 RS03CCAL-MJ03F-05-BOTPTA301,streamed,botpt_iris_sample
 RS03CCAL-MJ03F-05-BOTPTA301,streamed,botpt_lily_leveling
