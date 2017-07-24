@@ -1,3 +1,13 @@
+import datetime
+import calendar
+import requests
+import json
+import pandas as pd
+import concurrent.futures
+import numpy as np
+import csv
+
+
 
 # add back any refdes for which no data was returned
 dfa = ooi_data.drop(['timestamp'],axis = 1)

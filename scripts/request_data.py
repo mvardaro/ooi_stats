@@ -1,11 +1,11 @@
 import datetime
-import calendar
 import requests
 import json
 import pandas as pd
 import concurrent.futures
-import numpy as np
-import csv
+
+# this script is written in python 3, because python 2 has some SSL issues when threading
+# concurrent requests.
 
 # specify you api credentials, begin time and inputs
 username = 'OOIAPI-9N9UMLHV9W5GOP'
@@ -84,7 +84,7 @@ for index, row in refdes_streams_df.iterrows():
     requests_dict[ref_des] = ref_des_list
 
 # request data and store entry for refdes, stream and first data point returned
-print("Instrument request urls built. Requesting data...")
+print("Instrument request urls built. Requesting data for...")
 
 ref_des_list = []
 stream_list = []
@@ -92,7 +92,7 @@ timestamp_list = []
 
 
 for key, values in requests_dict.items():
-    print("requesting data for",key)
+    print(key)
     future_to_url = {pool.submit(request_data, url, username, token): url for url in values}
     for future in concurrent.futures.as_completed(future_to_url):
         url = future_to_url[future]
@@ -120,7 +120,5 @@ data_dict = {
     'stream':stream_list,
     'timestamp':timestamp_list}
 ooi_data = pd.DataFrame(data_dict, columns = ['refdes', 'stream', 'timestamp'])
-
-# ooi_data = ooi_data.drop_duplicates()
 ooi_data = ooi_data[ooi_data.timestamp >= begin_time_set.date()]
 ooi_data.to_csv('output/'+array+'/data.csv', index=False)
