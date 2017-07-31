@@ -11,14 +11,14 @@ import concurrent.futures
 username = 'OOIAPI-9N9UMLHV9W5GOP'
 token = 'SJN6HXHH116OZ8'
 begin_time_set = datetime.datetime(2013, 7, 1, 0,0,0)
-array = 'global'
+array = 'test3'
 input_path = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/'
 
 
 
 
 # set up threads pool and execute requests
-pool = concurrent.futures.ThreadPoolExecutor(max_workers=12)
+pool = concurrent.futures.ThreadPoolExecutor(max_workers=10)
 session = requests.session()
 
 # set up function to send requests
@@ -44,7 +44,7 @@ ntp_delta = (unix_epoch - ntp_epoch).total_seconds()
 now = datetime.datetime.now()
 days = abs(begin_time_set.date() - now.date())
 days = int(days.days)
-print(days,"days of data since", begin_time_str, "will be requested for each refdes+stream.")
+print(str(days) + " days of data since " + str(begin_time_str) + " will be requested for each refdes+stream.")
 
 # iterate over reference designators, delivery methods and streams in csv to build request urls by refdes.
 # the urls are stored in a dictonary.
