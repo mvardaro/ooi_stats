@@ -8,8 +8,8 @@ import concurrent.futures
 # concurrent requests.
 
 # specify you api credentials, begin time and inputs
-username = 'OOIAPI-9N9UMLHV9W5GOP'
-token = 'SJN6HXHH116OZ8'
+username = 'API USERNAME'
+token = 'API TOKEN'
 begin_time_set = datetime.datetime(2013, 7, 1, 0,0,0)
 array = 'test3'
 input_path = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/'
