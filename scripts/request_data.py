@@ -8,17 +8,17 @@ import concurrent.futures
 # concurrent requests.
 
 # specify you api credentials, begin time and inputs
-username = 'API USERNAME'
-token = 'API TOKEN'
+username = 'OOIAPI-30AZZ33CYL06XZ'
+token = '77CEUHU3VZ9'
 begin_time_set = datetime.datetime(2013, 7, 1, 0,0,0)
-array = 'test3'
+array = 'global'
 input_path = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/'
 
 
 
 
 # set up threads pool and execute requests
-pool = concurrent.futures.ThreadPoolExecutor(max_workers=10)
+pool = concurrent.futures.ThreadPoolExecutor(max_workers=12)
 session = requests.session()
 
 # set up function to send requests

@@ -4,7 +4,7 @@ import calendar
 import copy
 
 # read in data
-array = 'global'
+array = 'endurance'
 data_file = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/output/'+array+'/data.csv'
 refdes_streams = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/'+array+'.csv'
 data = pd.read_csv(data_file)
