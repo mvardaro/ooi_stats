@@ -1,3 +1,3 @@
 refdes,method,stream
-RS03INT2-MJ03D-06-BOTPTA303,streamed,botpt_nano_sample
-RS03INT2-MJ03D-12-VEL3DB304,streamed,vel3d_b_sample
+GI02HYPM-WFP02-04-CTDPFL000,recovered_wfp,ctdpf_ckl_wfp_instrument_recovered
+GI02HYPM-WFP02-04-CTDPFL000,telemetered,ctdpf_ckl_wfp_instrument
