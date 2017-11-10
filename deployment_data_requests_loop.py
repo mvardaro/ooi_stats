@@ -11,9 +11,8 @@ import gc
 
 # define your inputs
 username = 'OOIAPI-30AZZ33CYL06XZ'
-token = '77CEUHU3VZ9'
-arrays = ['pioneer']
-input_path = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/'
+token = 'GPJJ7ACBPR9'
+arrays = ['test']
 
 
 # set up some functions
@@ -51,7 +50,7 @@ for array in arrays:
 
     logging.basicConfig(filename=array+'_requests.log',level=logging.DEBUG)
 
-    refdes = input_path + array + '.csv'
+    refdes = 'input/' + array + '.csv'
     refdes_list = pd.read_csv(refdes)
     refdes_list = refdes_list['refdes']
     refdes_list = refdes_list.drop_duplicates()
@@ -137,10 +136,10 @@ for array in arrays:
 
 
     print("building data request urls...")
-    deployment_data_days['start_date'] = deployment_data_days['date']
-    deployment_data_days['end_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=86400)
+    deployment_data_days['start_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=5)
+    deployment_data_days['end_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=86395)
 
-    refdes_streams = input_path + array + '.csv'
+    refdes_streams = 'input/' + array + '.csv'
     refdes_streams_df = pd.read_csv(refdes_streams)
 
     request_inputs = pd.merge(refdes_streams_df,deployment_data_days, on='refdes')
@@ -163,6 +162,7 @@ for array in arrays:
                             '&endDT='+request_inputs.end_date+\
                             '&limit=1000&parameters='+parameter
 
+    
     request_urls = request_inputs['urls'].values.tolist()
 
 
@@ -173,7 +173,7 @@ for array in arrays:
 
 
     ref_des_list = []
-    deployment_list = []
+    # deployment_list = []
     method_list = []
     stream_list = []
     timestamp_list = []
@@ -185,17 +185,18 @@ for array in arrays:
         try: 
             data = future.result() 
             data = data.json()
-            reference_designator = data[0]['pk']['subsite'] + '-' + data[0]['pk']['node'] + '-' + data[0]['pk']['sensor']
-            deployment = data[0]['pk']['deployment']
-            method = data[0]['pk']['method']
-            stream = data[0]['pk']['stream']
-            timestamp = data[0]['time']
+            # take the fifth data point returned to avoid returns outside requested time ranges
+            reference_designator = data[5]['pk']['subsite'] + '-' + data[5]['pk']['node'] + '-' + data[5]['pk']['sensor']
+            deployment = data[5]['pk']['deployment']
+            method = data[5]['pk']['method']
+            stream = data[5]['pk']['stream']
+            timestamp = data[5]['time']
             timestamp = datetime.datetime.utcfromtimestamp(timestamp - ntp_delta).replace(microsecond=0)
             timestamp = timestamp.date()
             # print(reference_designator, deployment, method, stream, timestamp, future.result())
 
             ref_des_list.append(reference_designator)
-            deployment_list.append(deployment)
+            # deployment_list.append(deployment)
             method_list.append(method)
             stream_list.append(stream)
             timestamp_list.append(timestamp)
@@ -212,16 +213,18 @@ for array in arrays:
     # convert lists to data frame
     data_dict = {
         'refdes':ref_des_list,
-        'deployment':deployment_list,
+        # 'deployment':deployment_list,
         'method':method_list,
         'stream':stream_list,
         'date':timestamp_list}
         # add in deployment numbers
-    ooi_data = pd.DataFrame(data_dict, columns = ['refdes','deployment','method','stream', 'date'])
+    ooi_data = pd.DataFrame(data_dict, columns = ['refdes','method','stream', 'date'])
+    ooi_data = ooi_data.drop_duplicates() # drops days from overlapping deployment time ranges
     ooi_data['date'] = pd.to_datetime(ooi_data['date'])
     ooi_data['date'] = ooi_data.date.dt.strftime('%Y-%m-%d')
 
-    request_inputs = request_inputs[['refdes','deployment','method','stream', 'date']]
+    request_inputs = request_inputs[['refdes','method','stream', 'date']]
+    request_inputs = request_inputs.drop_duplicates() # drops days from overlapping deployment time ranges
     request_inputs['date'] = pd.to_datetime(request_inputs['date'])
     request_inputs['date'] = request_inputs.date.dt.strftime('%Y-%m-%d')
 
@@ -235,7 +238,7 @@ for array in arrays:
     output = pd.concat([ooi_data, deployed_but_no_data])
 
     # ooi_data = ooi_data[ooi_data.timestamp >= begin_time_set.date()]
-    output.to_csv(array+'.csv', index=False)
+    output.to_csv('output/'+array+'.csv', index=False)
 
     print('all requests for',array,'completed at',datetime.datetime.now(),'\n')
     
