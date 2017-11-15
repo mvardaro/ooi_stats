@@ -1,7 +1,5 @@
-import matplotlib.pyplot as plt
 import requests
 from requests.packages.urllib3.util.retry import Retry
-import json
 import datetime
 import pandas as pd
 import concurrent.futures
@@ -10,9 +8,9 @@ import gc
 
 
 # define your inputs
-username = 'OOIAPI-30AZZ33CYL06XZ'
-token = 'GPJJ7ACBPR9'
-arrays = ['test']
+username = ''
+token = ''
+arrays = ['example']
 
 
 # set up some functions
