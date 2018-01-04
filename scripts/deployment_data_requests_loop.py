@@ -5,12 +5,13 @@ import pandas as pd
 import concurrent.futures
 import logging
 import gc
+import os
 
 
 # define your inputs
 username = ''
 token = ''
-arrays = ['example']
+arrays = ['CE','CP','GA','GI','GP','GS','RS']
 
 
 # set up some functions
@@ -28,6 +29,7 @@ def diff_days(d1,d2):
 # base url for the request that will be built using the inputs above.
 DEPLOYEMENT_URL = 'https://ooinet.oceanobservatories.org/api/m2m/12587/events/deployment/inv/'
 DATA_URL = 'https://ooinet.oceanobservatories.org/api/m2m/12576/sensor/inv/'
+DATA_TEAM_PORTAL_URL = 'http://ooi.visualocean.net/data-streams/science/'
 parameter = '7'
 
 ntp_epoch = datetime.datetime(1900, 1, 1)
@@ -43,12 +45,15 @@ retry = Retry(
 adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100,max_retries=retry,pool_block=True)
 session.mount('http://', adapter)
 
+#make output directory
+output_dir = datetime.datetime.now().strftime('%Y%m%d') + '/'
 
 for array in arrays:
 
-    logging.basicConfig(filename=array+'_requests.log',level=logging.DEBUG)
+    log_filename = array
+    logging.basicConfig(filename=log_filename+'_requests.log',level=logging.DEBUG)
 
-    refdes = 'input/' + array + '.csv'
+    refdes = DATA_TEAM_PORTAL_URL + array
     refdes_list = pd.read_csv(refdes)
     refdes_list = refdes_list['refdes']
     refdes_list = refdes_list.drop_duplicates()
@@ -236,7 +241,7 @@ for array in arrays:
     output = pd.concat([ooi_data, deployed_but_no_data])
 
     # ooi_data = ooi_data[ooi_data.timestamp >= begin_time_set.date()]
-    output.to_csv('output/'+array+'.csv', index=False)
+    output.to_csv('output/'+ output_dir + array+'.csv', index=False)
 
     print('all requests for',array,'completed at',datetime.datetime.now(),'\n')
     
