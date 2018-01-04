@@ -55,6 +55,8 @@ for array in arrays:
 
     refdes = DATA_TEAM_PORTAL_URL + array
     refdes_list = pd.read_csv(refdes)
+    refdes_list = refdes_list[['reference_designator','method', 'stream_name','parameter_name']]
+    refdes_list.columns = ['refdes','method', 'stream','parameter']
     refdes_list = refdes_list['refdes']
     refdes_list = refdes_list.drop_duplicates()
 
@@ -142,8 +144,10 @@ for array in arrays:
     deployment_data_days['start_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=5)
     deployment_data_days['end_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=86395)
 
-    refdes_streams = 'input/' + array + '.csv'
+    refdes_streams = DATA_TEAM_PORTAL_URL + array
     refdes_streams_df = pd.read_csv(refdes_streams)
+    refdes_streams_df = refdes_streams_df[['reference_designator','method', 'stream_name','parameter_name']]
+    refdes_streams_df.columns = ['refdes','method', 'stream','parameter']
 
     request_inputs = pd.merge(refdes_streams_df,deployment_data_days, on='refdes')
 
