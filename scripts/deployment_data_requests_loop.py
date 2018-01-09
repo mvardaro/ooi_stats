@@ -11,8 +11,7 @@ import os
 # define your inputs
 username = ''
 token = ''
-arrays = ['CE','CP','GA','GI','GP','GS','RS']
-
+arrays = ['RS','CE','CP','GA','GI','GP','GS']
 
 # set up some functions
 def request_data(url,username,token):
@@ -47,14 +46,24 @@ session.mount('http://', adapter)
 
 #make output directory
 output_dir = datetime.datetime.now().strftime('%Y%m%d') + '/'
+new_dir = 'output/'+ output_dir
+if not os.path.isdir(new_dir):
+    try:
+        os.mkdir(new_dir)
+    except OSError:
+        if os.path.exists(new_dir):
+            pass
+        else:
+            raise
 
 for array in arrays:
 
     log_filename = array
-    logging.basicConfig(filename=log_filename+'_requests.log',level=logging.DEBUG)
+    logging.basicConfig(filename=log_filename+'_requests.log',level=logging.DEBUG,filemode='w')
 
-    refdes = DATA_TEAM_PORTAL_URL + array
-    refdes_list = pd.read_csv(refdes)
+    # refdes_in = DATA_TEAM_PORTAL_URL + array
+    refdes_in = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/GI_sci_parameters.csv'
+    refdes_list = pd.read_csv(refdes_in)
     refdes_list = refdes_list[['reference_designator','method', 'stream_name','parameter_name']]
     refdes_list.columns = ['refdes','method', 'stream','parameter']
     refdes_list = refdes_list['refdes']
@@ -144,10 +153,12 @@ for array in arrays:
     deployment_data_days['start_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=5)
     deployment_data_days['end_date'] = deployment_data_days['date'] + datetime.timedelta(seconds=86395)
 
-    refdes_streams = DATA_TEAM_PORTAL_URL + array
+    # refdes_streams = DATA_TEAM_PORTAL_URL + array
+    refdes_streams = '/Users/knuth/Documents/ooi/repos/github/ooi_stats/input/GI_sci_parameters.csv'
     refdes_streams_df = pd.read_csv(refdes_streams)
-    refdes_streams_df = refdes_streams_df[['reference_designator','method', 'stream_name','parameter_name']]
-    refdes_streams_df.columns = ['refdes','method', 'stream','parameter']
+    refdes_streams_df = refdes_streams_df[['reference_designator','method', 'stream_name']]
+    refdes_streams_df.columns = ['refdes','method', 'stream']
+    refdes_streams_df = refdes_streams_df.drop_duplicates()
 
     request_inputs = pd.merge(refdes_streams_df,deployment_data_days, on='refdes')
 
