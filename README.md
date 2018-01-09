@@ -1,6 +1,6 @@
 # description
 
-this repository contains the scripts that produce the statistics seen under `monthly stats` and `daily stats` at http://ooi.visualocean.net/. the repository is under active development. once finalized, the process will be documented and described in more detail.
+This repository contains the scripts that produce the statistics seen under `monthly stats` and `daily stats` at http://ooi.visualocean.net/. The repository is under active development. Once finalized, the process will be documented and described in more detail.
 
 
 # environment setup
@@ -28,6 +28,6 @@ For each refdes, deployment, method, science stream combination:
 `scripts/refdes_method_reduction.py`  
 These scripts roll up the status for a given day to the reference designator and stream type levels. Two seperate outputs are created.
 * refdes  
-  * if any stream under a reference designator recorded a data point for a given date, record 1, esle 0. This masks progress on ingestion where telemetered was available, but recovered data has been filled in.
+  * if any stream under a reference designator recorded a data point for a given date, record 1, else 0. This masks progress on ingestion where telemetered was available, but recovered data have been filled in.
 * stream_type  
-  * if any streamed, recovered or telemetered stream type received a data point for a given date, record 1, esle 0. This output is currently not being visualized at http://ooi.visualocean.net/, but will capture ingestion progress, where one stream type was previously available, but another wasn't.
+  * if any streamed, recovered, or telemetered stream type received a data point for a given date, record 1, else 0. This output is currently not being visualized at http://ooi.visualocean.net/, but will capture ingestion progress, where one stream type was previously available, but another was not.
