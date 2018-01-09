@@ -1,6 +1,6 @@
 # description
 
-this repository contains the scripts that produce the statistics seen under `monthly stats` and `daily stats` at http://ooi.visualocean.net/. the repository is under active development. once finalized, the process will be documented and described in detail.
+this repository contains the scripts that produce the statistics seen under `monthly stats` and `daily stats` at http://ooi.visualocean.net/. the repository is under active development. once finalized, the process will be documented and described in more detail.
 
 
 # environment setup
